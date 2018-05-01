@@ -1,0 +1,44 @@
+<%= form_with(model: post, local: true) do |post_form| %>
+  <% if post.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+      <ul>
+      <% post.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= post_form.label :title %>
+    <%= post_form.text_field :title, id: :post_title %>
+  </div>
+
+  <div class="field">
+    <%= post_form.label :body %>
+    <%= post_form.text_area :body, id: :post_body %>
+  </div>
+
+  <div id="tags">
+    <div v-for="tag in tags">
+      <label>Body</label>
+      <input v-model="tag.body" type="text" name="post[tags_attributes][][body]">
+      <input :value="tag.id" type="hidden" type="text" name="post[tags_attributes][][id]">
+      <input v-model="tag.destroy" type="checkbox"> destroy?
+      <input v-model="tag.destroy" type="hidden" type="text" name="post[tags_attributes][][_destroy]">
+    </div>
+    <button @click.prevent="addTag">Add tag</button>
+  </div>
+  <!-- <%= post_form.fields_for :tags do |tags_form| %>
+    <div class="field">
+      <%= tags_form.label :body %>
+      <%= tags_form.text_field :body %>
+    </div>
+  <% end %> -->
+
+  <div class="actions">
+    <%= post_form.submit %>
+  </div>
+<% end %>
